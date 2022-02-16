@@ -34,6 +34,6 @@ header{
     border-bottom: 1px solid gray;
 }
 
-button{
+button, input[type="file"]{
     cursor: pointer;
 }

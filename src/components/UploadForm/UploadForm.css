@@ -1,12 +1,25 @@
 .center-form{
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .center-form > *{
     margin: 1rem 0;
 }
 
-.label-space-right > *{
+.flex-side{
+    display: flex;
+}
+
+.flex-side > *{
     margin-right: 1rem;
+}
+
+.center-buttons{
+    display: flex;
+    justify-content: center;
+}
+.center-buttons button{
+    margin: 1rem 1rem;
 }
