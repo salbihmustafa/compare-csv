@@ -1,0 +1,12 @@
+.center-form{
+    display: flex;
+    flex-direction: column;
+}
+
+.center-form > *{
+    margin: 1rem 0;
+}
+
+.label-space-right > *{
+    margin-right: 1rem;
+}
