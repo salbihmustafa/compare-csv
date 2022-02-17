@@ -64,7 +64,7 @@ const UploadForm = () => {
   };
 
   const showNotFound = notFound.map((item) => {
-    return <div className="line-items">{item}</div>;
+    return <div className="line-items" key={item}>{item}</div>;
   });
 
   return (
