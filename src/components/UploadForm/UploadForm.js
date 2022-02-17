@@ -30,6 +30,7 @@ const UploadForm = () => {
   const clearForm = () => {
     setPoshmark("");
     setInventory("");
+    setNotFound([]);
   };
 
   const submitCompare = async (e) => {
