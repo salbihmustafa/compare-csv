@@ -3,37 +3,20 @@ import React, { useState } from "react";
 import Card from "../Card/Card";
 
 const UploadForm = () => {
-  const [input1, setInput1] = useState("");
-  const [input2, setInput2] = useState("");
+  const [poshmark, setPoshmark] = useState("");
+  const [inventory, setInventory] = useState("");
+  const [notFound, setNotFound] = useState([]);
 
-  const uploadFile1 = (event) => {
-    setInput1(event.target.files[0]);
+  const uploadPoshmark = (event) => {
+    setPoshmark(event.target.files[0]);
   };
 
-  const uploadFile2 = (event) => {
-    setInput2(event.target.files[0]);
-  };
-
-  const clearForm = () => {
-    setInput1("");
-    setInput2("");
-  };
-
-  const submitCompare = async (e) => {
-    e.preventDefault();
-
-    try {
-      let contentFile1 = await readFileAsync(input1);
-      debugger;
-      console.log(contentFile1);
-    } catch (err) {
-      console.log(err);
-    }
+  const uploadInventory = (event) => {
+    setInventory(event.target.files[0]);
   };
 
   const readFileAsync = (csvFile) => {
     return new Promise((resolve, reject) => {
-        debugger;
       let reader = new FileReader();
 
       reader.onload = (res) => {
@@ -44,16 +27,55 @@ const UploadForm = () => {
     });
   };
 
+  const clearForm = () => {
+    setPoshmark("");
+    setInventory("");
+  };
+
+  const submitCompare = async (e) => {
+    e.preventDefault();
+
+    try {
+      let poshmarkFile = await readFileAsync(poshmark);
+      let inventoryFile = await readFileAsync(inventory);
+
+      let poshmark_lines = poshmarkFile.split("\n"); //split by crlf
+      let inventory_lines = inventoryFile.split("\n"); //split by crlf
+
+      let poshmarkLength = poshmark_lines.length - 1;
+      let inventoryLength = inventory_lines.length - 1;
+      for (let i = 0; i < poshmarkLength; i++) {
+        let poshmarkTitle = poshmark_lines[i];
+        let matches = 0;
+        for (let j = 0; j < inventoryLength; j++) {
+          let inventoryTitle = inventory_lines[j];
+          if (poshmarkTitle.toUpperCase() === inventoryTitle.toUpperCase()) {
+            matches++;
+          }
+        }
+        if (matches == 0) {
+          setNotFound((arr) => [...arr, poshmarkTitle]);
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const showNotFound = notFound.map((item) => {
+    return <div className="line-items">{item}</div>;
+  });
+
   return (
     <Card>
       <form className="center-form" onSubmit={submitCompare}>
         <div className="flex-side">
-          <label>Upload CSV:</label>
-          <input type="file" accept=".csv" onChange={uploadFile1} />
+          <label>Upload Poshmark CSV:</label>
+          <input type="file" accept=".csv" onChange={uploadPoshmark} />
         </div>
         <div className="flex-side">
-          <label>Upload CSV:</label>
-          <input type="file" accept=".csv" onChange={uploadFile2} />
+          <label>Upload Inventory CSV:</label>
+          <input type="file" accept=".csv" onChange={uploadInventory} />
         </div>
         <div className="center-buttons">
           <button type="reset" onClick={clearForm}>
@@ -62,6 +84,8 @@ const UploadForm = () => {
           <button type="submit">Compare</button>
         </div>
       </form>
+      <div>NUMBER OF MISMATCHES: {notFound.length}</div>
+      {notFound.length > 0 && <div>{showNotFound}</div>}
     </Card>
   );
 };

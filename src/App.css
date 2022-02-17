@@ -32,6 +32,7 @@ header{
     z-index: 5;
     justify-content: center;
     border-bottom: 1px solid gray;
+    font-size: 24px;
 }
 
 button, input[type="file"]{

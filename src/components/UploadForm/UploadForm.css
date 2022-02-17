@@ -23,3 +23,10 @@
 .center-buttons button{
     margin: 1rem 1rem;
 }
+
+.line-items{
+    border: 1px solid gray;
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
